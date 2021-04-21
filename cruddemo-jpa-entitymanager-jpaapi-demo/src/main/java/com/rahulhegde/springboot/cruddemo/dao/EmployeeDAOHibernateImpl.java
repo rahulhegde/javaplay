@@ -5,10 +5,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.rahulhegde.springboot.cruddemo.entity.Employee;
 
 // Repository is variation of Component that help to create bean
@@ -29,7 +29,7 @@ public class EmployeeDAOHibernateImpl implements EmployeeDAO {
 	public List<Employee> findAll() {
 		//Session currentSession = (Session) entityManager.unwrap(Session.class);
 		TypedQuery<Employee> query = entityManager.createQuery("from Employee", Employee.class);
-		List<Employee> employees = query.getResultList();
+		List<Employee> employees = query.ResultList();
 		for (Employee employee : employees) {
 			System.out.println("Employees - " + employee);
 		}

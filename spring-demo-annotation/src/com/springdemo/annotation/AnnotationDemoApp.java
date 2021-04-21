@@ -10,7 +10,8 @@ public class AnnotationDemoApp {
 	
 	// Check the usage of PropertySource
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beanAnnotationContext.xml");
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"beanAnnotationContext.xml");
 		
 		Coach theCoach1 = context.getBean("SimpleTennisCoach", Coach.class);
 		// default annotation component name for CricketCoach

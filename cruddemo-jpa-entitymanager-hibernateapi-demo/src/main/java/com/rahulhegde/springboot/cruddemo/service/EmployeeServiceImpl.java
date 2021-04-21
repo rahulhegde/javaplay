@@ -10,7 +10,8 @@ import com.rahulhegde.springboot.cruddemo.dao.EmployeeDAO;
 import com.rahulhegde.springboot.cruddemo.entity.Employee;
 
 // Service is specialized annotation of @Component. 
-// Provides Business Implementation using DAO Object. Adheres to Design Pattern - Separation of Concerns
+// Provides Business Implementation using DAO Object. 
+// Adheres to Design Pattern - Separation of Concerns
 
 // Responsibilities - 
 // Service implements business service rules using DAOs.

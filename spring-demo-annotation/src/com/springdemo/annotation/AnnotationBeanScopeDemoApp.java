@@ -6,7 +6,8 @@ public class AnnotationBeanScopeDemoApp {
 
 	// Demo App shows the loading the beans using component scan of package using XML definition.
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beanAnnotationContext.xml");
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"beanAnnotationContext.xml");
 		
 		Coach tennisCoach1 = context.getBean("SimpleTennisCoach", Coach.class);
 		Coach tennisCoach2 = context.getBean("SimpleTennisCoach", Coach.class);
