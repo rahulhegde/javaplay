@@ -1,1 +1,4 @@
 /com/
+/coach2.properties
+/beanScopeDemoUsingAnnotation.xml
+/beanScopePrototypePostDestroyUsingAnnotation.xml
