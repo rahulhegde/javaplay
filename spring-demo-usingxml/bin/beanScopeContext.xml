@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- bean definitions here -->
-    
-    <bean id="myFortune" class="spring.rahul.coach.HappyFortuneService" scope="prototype" 
-    init-method="HappyFortuneInit" destroy-method="HappyFortuneDestroy"/>
- 
- 	<!--  default - singleton -->
-	<bean id="myCoachSingleton" class="spring.rahul.coach.CricketCoach" init-method="Init" destroy-method="Destroy">
-		<constructor-arg ref="myFortune"> </constructor-arg>
-	</bean>
-	<bean id="myCoachPrototype" class="spring.rahul.coach.CricketCoach" scope="prototype">
-		<constructor-arg ref="myFortune"> </constructor-arg>
+
+	<!-- init & destroy can have any method name, no arguments -->
+	<bean id="myFortune"
+		class="spring.rahul.coach.HappyFortuneService" scope="prototype" 
+	
+		init-method="HappyFortuneInit" destroy-method="HappyFortuneDestroy" />
+
+	<!-- default - singleton -->
+	<bean id="myCricketCoachSingleton"
+		class="spring.rahul.coach.CricketCoach" init-method="Init"
+		destroy-method="Destroy">
+		<constructor-arg ref="myFortune"/>
 	</bean>
 
+	<bean id="myCricketCoachPrototype"
+		class="spring.rahul.coach.CricketCoach" scope="prototype">
+		<constructor-arg ref="myFortune"/>
+	</bean>
 
 </beans>

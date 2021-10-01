@@ -13,24 +13,29 @@ import org.springframework.beans.factory.config.DestructionAwareBeanPostProcesso
  *
  */
 public class CricketCoach implements Coach, DisposableBean{
-	
+
 	private FortuneService myFortuneService;
 	private String team;
 	private String emailId;
-	
-	
+
+
 	public CricketCoach(FortuneService myFortuneService) {
-		System.out.println("CricketCoach::CricketCoach constructor");
+		System.out.println("CricketCoach::CricketCoach constructor - arg1 myFortuneService");
 		this.myFortuneService = myFortuneService;
 	}
 
 	public CricketCoach() {
-		System.out.println("CricketCoach::CricketCoach constructor");
+		System.out.println("CricketCoach::CricketCoach constructor - noarg");
 	}
 
-	
+
+	@Override
+	public String toString() {
+		return "CricketCoach [myFortuneService=" + myFortuneService + ", team=" + team + ", emailId=" + emailId + "]";
+	}
+
 	public void setMyFortuneService(FortuneService myFortuneService) {
-		System.out.println("CricketCoach:setMyFortuneService");
+		System.out.println("CricketCoach:setMyFortuneService - " + myFortuneService);
 		this.myFortuneService = myFortuneService;
 	}
 
@@ -69,18 +74,16 @@ public class CricketCoach implements Coach, DisposableBean{
 	public String getFortuneAddress() {
 		return myFortuneService.toString();
 	}
-	
+
 	public void Init( ) {
 		System.out.println("CricketCoach Bean - Init Container: " + this);
 	}
-	
+
 	public void Destroy( ) {
 		System.out.println("CricketCoach Bean - Destroy Container");
 	}
-	
+
 	public void destroy() {
-		myFortuneService = null;
 		System.out.println("CricketCoach Bean - Destroy from Disposible Implementation: " + this);
 	}
-	
 }
