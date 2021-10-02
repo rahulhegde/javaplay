@@ -12,102 +12,12 @@ import org.hibernate.cfg.Configuration;
 // Reference: https://vladmihalcea.com/a-beginners-guide-to-jpa-hibernate-entity-state-transitions/
 // this documentation shows the different state of the entity object
 
-public class HibernateConnectTest {
+public class HibernateReadIsolationTest {
 	
 	Session globalSession = null;
 	SessionFactory globalSessionFactory = null;
 	
-	/** 
-	 * Reference: https://vladmihalcea.com/a-beginners-guide-to-jpa-hibernate-entity-state-transitions/
-	 * this documentation shows the different state of the entity object
-	 * new - state of entity not managed by persistence context (hibernate or JPA)
-		- any changes to the entity will not be reflected until moved to managed state
-		Student student = new Student(2, "rahul", "hegde", "hegde.rahul@gmail.com");
-		
-		- use persist (JPA) or save (Hibernate) API to move from new to managed state .
-		- persist (with IDENTITY) 
-			- must have identity column to be 0 (such that not set).
-			- no return value
-		- save (with IDENTITY set) 
-			- it is optional to set identity col to zero and ensures object creation.
-			- returns identity col in serialized form
-		- update + delete - calls are delayed (optimization) using transaction-write behind.
-		- flush - forces sync between hibernate (first level) cache and database
-			
-		state is converted to managed.  
-	 */
-	void demoHibernateSession_StudentSave( ) {
 
-		SessionFactory sessionFactory = null;
-		Session session = null;
-		try {	
-			// create hibernate session factory
-			// save is hibernate specific API whereas persist is JPA adhered
-			sessionFactory = new Configuration()
-					.configure("hibernate.cfg.xml")
-					.addAnnotatedClass(Student.class)
-					.buildSessionFactory();
-
-			session = sessionFactory.getCurrentSession();
-			
-			// change the flush mode if required as part of test
-			//session.setHibernateFlushMode(FlushMode.COMMIT);
-
-			// object in new or transient state such that not part of the persistent content
-			// persistent context provides session factory object
-			//Student student = new Student(2, "rahul", "hegde", "hegde.rahul@gmail.com");
-			Student student = new Student("rahul", "hegde", "hegde.rahul@gmail.com");
-	
-
-			session.beginTransaction();
-			
-			// this will transition new to managed state for the student object 
-			// fire up query to database inorder to get Identity Object (not wait)
-			// until transaction-write-behind
-			session.persist(student);
-			// System.out.println("save session return: " + session.save(student));
-				
-			// further state changes to the managed object, gets reflected
-			// these are not immediate however delayed until commit or next flush
-			student.setEmail("changed@gmail.com");
-			student.setFirstName("changed");
-			System.out.println("state changes: " + student.toString());
-			System.out.println("session flush mode type: " + session.getFlushMode());
-
-			// if flush is commented - see optimization by hibernate - 
-			// 		SQLs are insert -> update -> delete
-			// else 
-			//		SQLs are insert -> delete (update is skipped)
-			// depends on application behavior required - o
-			// if flush is commented - here are logs of SQL
-			// Hibernate: insert into student (email, first_name, last_name) values (?, ?, ?)
-			// state changes -  sleep 3 secsStudent [id=28, firstName=changed, lastName=hegde, email=changed@gmail.com]
-			// Hibernate: update student set email=?, first_name=?, last_name=? where id=?
-			// Hibernate: delete from student where id=?
-		
-			// session.flush();
-			
-			// introduce sleep to view hibernate generated SQL statements.
-			System.out.println("sleeping for 3s");
-			Thread.sleep(3000);
-						
-			// remove the entity like DELETE * FROM TABLE with id = ?
-			// session.delete(student);
-			
-			// commit the transaction to the database
-			// though there are two updates, hibernate translates to a single SQL update 
-			// this is achieved through transaction-write-behind
-			session.getTransaction().commit();
-
-		} catch (Exception ex){ 
-			ex.printStackTrace();			
-		} finally {		
-			// cleanup
-			session.close();
-			sessionFactory.close();
-			sessionFactory = null;
-		}
-	}
 	
 	
 	public void demoHibernate_ReadIsolation_Thread1ReadThread2Write() {
@@ -237,13 +147,13 @@ public class HibernateConnectTest {
 
 					session.beginTransaction();
 
-					for (int index = 0; index < 5; index++) {
+					for (int index = 0; index < 1; index++) {
 						Student s = session.get(Student.class, 49, 
 								new LockOptions(LockMode.PESSIMISTIC_READ));
 
 						// hold the write so that other PR thread can write first
 						try {
-							Thread.sleep(4000);
+							Thread.sleep(1000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -253,7 +163,17 @@ public class HibernateConnectTest {
 						s.setEmail("changebyThread-PRPR-11 - " + Integer.toString(index));
 
 						session.flush();
-						System.out.println("changebyThread1 f-o - Student - " + s);
+						
+						System.out.println("changebyThread1 f-o1 - Student - " + s);
+
+						// hold the write so that other PR thread can write first
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						System.out.println("changebyThread1 f-o2 - Student - " + s);
 
 					}
 					session.getTransaction().commit();
@@ -267,7 +187,7 @@ public class HibernateConnectTest {
 				@Override
 				public void run() {
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(15000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -276,13 +196,13 @@ public class HibernateConnectTest {
 //					session.setHibernateFlushMode(FlushMode.COMMIT);
 					
 					session.beginTransaction();
-					for (int index = 10; index < 15; index++) {
+					for (int index = 10; index < 11; index++) {
 						Student s = session.get(Student.class, 49, 
 								new LockOptions(LockMode.PESSIMISTIC_READ));
 						System.out.println("changebyThread2 f-i: Student - " + s);
-						s.setEmail("changebyThread-PRPR-22 - " + Integer.toString(index));
+						s.setEmail("changebyThread-PRPR-27 - " + Integer.toString(index));
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -351,7 +271,7 @@ public class HibernateConnectTest {
 						}
 						
 						System.out.println("changebyThread1 f-i - Student - " + s);			
-						s.setEmail("changebyThread-PRPW-16 - " + Integer.toString(index));
+						s.setEmail("changebyThread-PRPW-17 - " + Integer.toString(index));
 
 						session.flush();
 						System.out.println("changebyThread1 f-o - Student - " + s);
@@ -381,7 +301,7 @@ public class HibernateConnectTest {
 						Student s = session.get(Student.class, 49, 
 								new LockOptions(LockMode.PESSIMISTIC_WRITE));
 						System.out.println("changebyThread2 f-i: Student - " + s);
-						s.setEmail("changebyThread-PRPW-26 - " + Integer.toString(index));
+						s.setEmail("changebyThread-PRPW-27 - " + Integer.toString(index));
 						try {
 							Thread.sleep(1000);
 						} catch (InterruptedException e) {
@@ -815,10 +735,10 @@ public class HibernateConnectTest {
 	
 	public static void main(String[] args) {
 
-		HibernateConnectTest test = new HibernateConnectTest();
+		HibernateReadIsolationTest test = new HibernateReadIsolationTest();
 		
 		// Hibernate save session 
-		// test.demoHibernateSession_StudentSave();
+		test.demoHibernateSession_StudentSave();
 		
 		// Conclusion: isolation level changes 
 		// TRANSACTION_REPEATABLE_READ 	- 	t1 always get the same value in the scope of the transaction 
@@ -866,10 +786,11 @@ public class HibernateConnectTest {
 		//test.demoHibernate_TestWriteThread1WriteThread2_PessimisticReadPessimisticRead_Deadlock();
 		
 		// CASE of Shared Read Lock 
-		// Thread 1 first holds Pessimistic Read, Thread2 will acquire Pessimistic Write
-		// however thread 2 will throw deadlock exception at the time acquiring Pessimistic Write
-		// Lock
-		test.demoHibernate_TestWriteThread1WriteThread2_PessimisticReadPessimisticWrite_Deadlock();
+		// Thread 1 first holds Pessimistic Read, Thread2 will try to acquire Pessimistic Write
+		// and will be blocked. 
+		// If Thread 1 flushes any write on the same object then thread 2 will throw deadlock 
+		// exception at the time acquiring Pessimistic Write Lock
+		// test.demoHibernate_TestWriteThread1WriteThread2_PessimisticReadPessimisticWrite_Deadlock();
 		
 	}
 }
