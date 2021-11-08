@@ -1,5 +1,6 @@
 package com.rahulhegde.xa.config;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.jms.ConnectionFactory;
@@ -26,7 +27,7 @@ import com.ibm.msg.client.wmq.WMQConstants;
 import com.mysql.cj.jdbc.MysqlXADataSource;
 
 @Configuration
-public class DataSourceConfiguration {
+public class AtomikosConfiguration {
 	// Create variables for the connection to MQ
 	private static final String HOST = "localhost"; // Host name or IP address
 	private static final int PORT = 1414; // Listener port for your queue manager
@@ -37,17 +38,23 @@ public class DataSourceConfiguration {
 	private static final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
 
 	@Bean(initMethod = "init", destroyMethod = "close")
-	public DataSource dataSource() {
+	public DataSource dataSource() throws SQLException {
 		MysqlXADataSource mysqlXaDataSource = new MysqlXADataSource();
 		mysqlXaDataSource.setURL("jdbc:mysql://localhost:3306/hb_student_tracker?useSSL=false");
 		mysqlXaDataSource.setUser("hbstudent");
 		mysqlXaDataSource.setPassword("hbstudent");
-		//mysqlXaDataSource.setPinGlobalTxToPhysicalConnection(true);
+		
+		// MySQL does not support TMJOIN hence the Atomikos suggestion
+		// TestAtomikosHibernatenJMSUsingAnnotation fails if not set to true with invalid data source
+		mysqlXaDataSource.setPinGlobalTxToPhysicalConnection(true);
 
 		AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
 		xaDataSource.setXaDataSource(mysqlXaDataSource);
 		xaDataSource.setUniqueResourceName("mysql-ds1");
 		xaDataSource.setXaDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlXADataSource");
+		
+		// Helps to run multiple connection test cases
+		xaDataSource.setMaxPoolSize(10);
 		return xaDataSource;
 	}
 

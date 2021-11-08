@@ -27,17 +27,18 @@ import com.atomikos.jms.AtomikosJMSException;
 import com.rahulhegde.xa.model.Student;
 
 @Component
-public class Application {
+public class AtomikosTest {
 
 	@Autowired
 	DataSource dataSource;
-	
+
 	@Autowired
 	ConnectionFactory jmsSource;
 
 	@Autowired
 	EntityManagerFactory entityManagerFactory;
 
+	// JDBC call under Atomikos Global Transaction
 	public void TestAtomikosJDBC() {
 		UserTransactionImp utx = new UserTransactionImp();
 
@@ -77,6 +78,7 @@ public class Application {
 		}
 	}
 
+	// JDBC and JMS Put call under Atomikos Global Transaction
 	public void TestAtomikosJDBCnJMS() {
 		final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
 
@@ -139,6 +141,9 @@ public class Application {
 		}
 	}
 
+	// Mulitple JDBC connection, per connection insert and a single JMS Put call under Atomikos Global Transaction
+	// Uses Transaction annotation.
+	
 	// Only Runtime Exception are caught, Exception.class is every exception class for rollback.
 	// AtomikosJMSException is thrown is the queue manager was not running
 	@Transactional(rollbackFor= {AtomikosJMSException.class})
@@ -155,10 +160,29 @@ public class Application {
 		String q1 = "insert into student (email, first_name, last_name) values ('xa3@gmail.com', 'xafn3', 'xaln3')";
 		System.out.println("insert state: " + s1.executeUpdate(q1));
 
+		java.sql.Connection mysqlConnection2 = dataSource.getConnection();
+		Statement s2 = mysqlConnection2.createStatement();
+		String q2 = "insert into student (email, first_name, last_name) values ('xa32@gmail.com', 'xafn32', 'xaln32')";
+		System.out.println("insert state: " + s2.executeUpdate(q2));
+		s2.close();
+		mysqlConnection2.close();
+		
+		
 		// If below line is uncommented - Cannot call method 'commit' while a global transaction is running
 		// mysqlConnection.commit();
 		s1.close();			
 		mysqlConnection.close();
+		
+//		java.sql.Connection mysqlConnection2 = dataSource.getConnection();
+//		Statement s2 = mysqlConnection2.createStatement();
+//		String q2 = "insert into student (email, first_name, last_name) values ('xa3@gmail.com', 'xafn3', 'xaln3')";
+//		System.out.println("insert state: " + s2.executeUpdate(q2));
+//
+//		// If below line is uncommented - Cannot call method 'commit' while a global transaction is running
+//		// mysqlConnection.commit();
+//		s2.close();			
+//		mysqlConnection2.close();
+
 
 		// mq operations
 		javax.jms.Connection cf = jmsSource.createConnection();
@@ -176,34 +200,37 @@ public class Application {
 
 		// utx.commit();
 	}
+
 	
-	
+	// Mulitple Hibernate entity manager, single insert per session and a single JMS Put call under Atomikos Global Transaction
+	// Uses Transaction annotation.
 	// Only Runtime Exception are caught, Exception.class is every exception class for rollback.
 	// AtomikosJMSException is thrown is the queue manager was not running
-	//@Transactional(rollbackFor= {AtomikosJMSException.class})
+	@Transactional(rollbackFor= {AtomikosJMSException.class})
 	public void TestAtomikosHibernatenJMSUsingAnnotation() throws Exception {
 		final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
 
-			UserTransactionImp utx = new UserTransactionImp();
-			utx.begin();
+//		UserTransactionImp utx = new UserTransactionImp();
+//		utx.begin();
 
-		// mysql operations
-//		java.sql.Connection mysqlConnection = dataSource.getConnection();
-//		Statement s1 = mysqlConnection.createStatement();
-//		String q1 = "insert into student (email, first_name, last_name) values ('xa3@gmail.com', 'xafn3', 'xaln3')";
-//		System.out.println("insert state: " + s1.executeUpdate(q1));
-//		s1.close();			
-//		mysqlConnection.close();
-		
+
+		// hibernate
 		EntityManager em = entityManagerFactory.createEntityManager();
 		Student p = new Student();
-		p.setEmail("xa4@gmail.com");
-		p.setFirstName("xafn4");
-		p.setLastName("xaln4");
+		p.setEmail("xa41@gmail.com");
+		p.setFirstName("xafn41");
+		p.setLastName("xaln41");
 		em.persist(p);
-		em.getTransaction().commit();
-		em.close();
 		
+		
+		EntityManager em2 = entityManagerFactory.createEntityManager();
+		Student p2 = new Student();
+		p2.setEmail("xa42@gmail.com");
+		p2.setFirstName("xafn42");
+		p2.setLastName("xaln42");
+		em2.persist(p2);
+		em2.close();
+
 		// mq operations
 		javax.jms.Connection cf = jmsSource.createConnection();
 		Session s = cf.createSession(true, 0);
@@ -218,6 +245,6 @@ public class Application {
 		s.close();
 		cf.close();
 
-		utx.commit();
+//		utx.commit();
 	}	
 }
