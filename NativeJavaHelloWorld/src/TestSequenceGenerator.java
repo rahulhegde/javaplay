@@ -8,11 +8,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 
 
-class TestSequenceGenerator {
+public class TestSequenceGenerator {
 
 	@Test
 	public void givenUnsafeSequenceGenerator_whenRaceCondition_thenUnexpectedBehavior() throws Exception {
@@ -27,7 +27,7 @@ class TestSequenceGenerator {
 	    List<Future<Integer>> futures = new ArrayList<>();
 
 	    for (int i = 0; i < count; i++) {
-	        futures.add(executor.submit(generator::getNextSequence);
+	        futures.add(executor.submit(generator::getNextSequence));
 	    }
 
 	    for (Future<Integer> future : futures) {

@@ -16,6 +16,9 @@ public class BeanScanConfigurationUsesBeanAnnotation {
 	@Value("${fortuneTeller.name}") 
 	private String value;
 
+	// the @configuration with @bean annotation helps provide spring support to class 
+	// that does not define it as bean
+	
 	@Bean(name = "SwimCoach", initMethod = "swimcoachBeanLifecyclePostConstructEvent", destroyMethod = "swimcoachBeanLifecyclePreDestroyEvent")
 	public Coach CreateSwimCoachBean() {
 		System.out.println("swim coach instantiated, reading from property source: " + value);

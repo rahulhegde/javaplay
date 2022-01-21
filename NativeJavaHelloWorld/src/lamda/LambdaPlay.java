@@ -11,6 +11,21 @@ public class LambdaPlay
 {
 	int memberVariable;
 	static int staticVariable = 100;
+
+	public LambdaPlay() {
+	}
+
+	public LambdaPlay(FunctionalInterfaceAddNumbers localVariableLamdaTest) {
+		localVariableLamdaTest.sum(1, 2);
+	}
+	
+	public void simplePublicScopePrint() {
+		System.out.println("simplePublicScopePrint");
+	}
+
+	private void simplePrivateScopePrint() {
+		System.out.println("simplePrivateScopePrint");
+	}
 	
 	public void TestLamdaPlay() {
 		System.out.println("** Entering Lambda Test ***");
@@ -23,9 +38,17 @@ public class LambdaPlay
 		// convert string to int using static method reference	
 		LamdaPlay_StringIntConversion();
 		
-		LambdaPlay_AccessingVariables();
+		LambdaPlay_AccessingVariables(2);
 		
 		LambdaPlay_AnonymousObjectAccessingDefaultInterfaceMethod();
+		
+		LambdaPlay_AccessingVariables_OnArgument((a,b) -> {
+			int c = a + b;
+			System.out.println("LambdaPlay_AccessingVariables_OnArgument - memberVariable: " + this.memberVariable);
+			System.out.println("LambdaPlay_AccessingVariables_OnArgument - staticVariable: " + staticVariable);
+			System.out.println("LambdaPlay_AccessingVariables_OnArgument - sum: " + c );
+			return c;
+		});
 		
 //		LambdaPlay_ConsumerObject();
 //		LambdaPlay_ListPrint();
@@ -56,22 +79,36 @@ public class LambdaPlay
 		System.out.println("FunctionalInterfaceConvertStringToInteger using object method reference: " + myFunctionObject3.Convert("2"));
 	}
 	
-	void LambdaPlay_AccessingVariables( ) {
-		final int localVariable = 10;
+	void LambdaPlay_AccessingVariables(int methodArg1) {
+		// this localVariable should be final or effective final (value not changed after lamda definition)
+		// this is also true if an 
+		int localVariable = 10;
 		memberVariable = 20;
 		staticVariable = 30;
 		
-		FunctionalInterfaceAddNumbers adder1 = (a, b) -> { return a + memberVariable + staticVariable + b; };
-		System.out.println("FunctionalInterfaceAddNumbers - accessing member + static variable: " + adder1.sum(1, 2));
+		FunctionalInterfaceAddNumbers staticAndMemberClassLamdaTest = (a, b) -> { return a + memberVariable + staticVariable + b; };
+		System.out.println("FunctionalInterfaceAddNumbers - accessing member + static variable: " + staticAndMemberClassLamdaTest.sum(1, 2));
 		
-		// compilation
-		FunctionalInterfaceAddNumbers adder2 = (a, b) -> { return a + localVariable + b; };
-		System.out.println("FunctionalInterfaceAddNumbers - accessing local variable: " + adder2.sum(1, 2));
+		// compilation failure - local 
+		FunctionalInterfaceAddNumbers localVariableLamdaTest = (a, b) -> { return a + localVariable + methodArg1 + b; };
+		// compilation failure un-comment
+		// localVariable = 20;
+		// methodArg1 = 20; 
+		System.out.println("FunctionalInterfaceAddNumbers - accessing local variable: " + localVariableLamdaTest.sum(1, 2));
 		
-		memberVariable = 10;
-		staticVariable = 10;
-			
+		
+		FunctionalInterfaceAddNumbers accessMethodLambda = (a, b) -> { 
+			this.simplePrivateScopePrint();
+			this.simplePublicScopePrint();
+			return a + b; 
+		};
+		System.out.println("FunctionalInterfaceAddNumbers - accessing local variable: " + accessMethodLambda.sum(1, 2));
 	}
+
+	void LambdaPlay_AccessingVariables_OnArgument (FunctionalInterfaceAddNumbers localVariableLamdaTest) {
+		localVariableLamdaTest.sum(100, 200);
+	}
+
 	
 	void LambdaPlay_AnonymousObjectAccessingDefaultInterfaceMethod( ) {
 		

@@ -1,0 +1,8 @@
+2021-11-05 09:23:21,712 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-11-05 09:23:21,734 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 8 ms. Found 0 JPA repository interfaces.
+2021-11-05 09:23:22,758 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2021-11-05 09:23:23,015 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2021-11-05 09:23:23,406 INFO o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-11-05 09:23:23,559 INFO o.s.o.j.LocalContainerEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-11-05 09:23:23,565 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2021-11-05 09:23:23,585 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

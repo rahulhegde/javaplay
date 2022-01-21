@@ -7,20 +7,40 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ListPlay {
+	public enum State {
+		ON(1), OFF(2);
+		
+		int state;
+
+		State(int i) {
+			System.out.println("enum state: " + i);
+			state = i;
+		}
+
+		int getState() {
+			return state;
+		}
+	}
 
 	void ListPlay_ArrayList( ) {
 		List<Integer> arrayList = new ArrayList<Integer>();
-
-		int index = 100;
+		
+		
+		int index = 15;
 		for (;index > 0;index--) {
 			arrayList.add(1);
 			arrayList.add(5);
 			arrayList.add(3);
 		}		
 
-		for (Integer i : arrayList) {
-			System.out.println("element in array list: " + i);
-		}
+		System.out.println("element in array list (before - arraylist): " + arrayList);
+		
+		List<Integer> sliceList = arrayList.subList(0, 10);
+		sliceList.set(1, 2);
+
+		System.out.println("element in array list (after - subList): " + sliceList);
+		System.out.println("element in array list (after - arraylist): " + arrayList);
+
 	}
 
 	// Reference: https://stackoverflow.com/questions/40930861/what-is-the-use-of-collections-synchronizedlist-method-it-doesnt-seem-to-syn
@@ -135,13 +155,13 @@ public class ListPlay {
 		Predicate<Integer> isGreaterThanTen = n -> n > 10;
 		singlePredicateList.removeIf(isGreaterThanTen);
 		System.out.println("Remove entries greater than 10: " + singlePredicateList);
-		
+
 		// predicate chaining works
 		List<Integer> predicateChainLists = new ArrayList(Arrays.asList(1, 3, 5, 8, 10, 20, 30, 40, 60, 30));
 		Predicate<Integer> isLessThanEqual60 = n -> n <= 60;
 		predicateChainLists.removeIf(isLessThanEqual60.and(isGreaterThanTen));
 		System.out.println("Predicate Chaining works - Remove entries if >10 and <= 60: " + predicateChainLists);
-		
+
 		// double condition in predicate - works
 		List<Integer> doubleConditionPredicateLists = new ArrayList(Arrays.asList(1, 3, 5, 8, 10, 20, 30, 40, 60, 30));
 		Predicate<Integer> isGreaterThan10andLessThanEqual60 = (n -> (n > 10  && n <= 60));
@@ -151,23 +171,26 @@ public class ListPlay {
 		// combining multiple predicates and testing for the number
 		System.out.println("predicate test API is 11 > 10 AND <= 60: " + 
 				isGreaterThanTen.and(isLessThanEqual60).test(12));
-		
+
 		// removeIf - predicate on the object
 		List<Shape> shapeList = new ArrayList(Arrays.asList(new Rectangle(), new Circle()));
 		Predicate<Shape> detectShapeCircle = shape -> (shape.type().equals("Circle"));
 		shapeList.removeIf(detectShapeCircle);
 		System.out.println("circle removed - " + shapeList);
 	}
-	
-	
+
+
 	public void TestListPlay() {
 		System.out.println("** Entering Collection List Test ***");
+		System.out.println("State: " + State.ON);
+
+
 
 		//ListPlay_ArrayList();
 		//ListPlay_CollectionSynchronizedList();
 
 		//ListPlay_Wildcard();
-		
+
 		//ListPlay_RemoveIf_Predicate();
 	}
 

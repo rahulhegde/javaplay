@@ -1,13 +1,14 @@
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-import functionInterface.FunctionalInterfacePlay;
-import lamda.LambdaPlay;
-import lamda.PredicatePlay;  
+import DatePlay.DatePlay;
+import enums.EnumPlay;
+import exceptioner.ExceptionPlay;  
 
 class Example {
 	HashMap <String, DatePlay> mapper = new HashMap<String, DatePlay>();
 	Integer x;
+	
 	
 	void print() {
 		SubExample ee2 = new SubExample();
@@ -32,14 +33,40 @@ class Example {
 	    };
 	}
 	
-	
+
 	public static void main(String args[]) {
+		
 		int i = 100;
 		int j = 200;
 		StringBuilder key = new StringBuilder();
 		key.append(i).append('_').append(j);
-		System.out.println("string - " + key);
+	
 		
+		ExceptionPlay excepPlay = new ExceptionPlay();
+		excepPlay.exceptionPlay();
+		
+//		Map<String, Boolean> holder = new HashMap<>(2);
+//		holder.put("1", true);
+//		holder.put("2", true);
+//		
+//		if (holder.get("1") == holder.get("2")) {
+//			System.out.println("true object is same");
+//		} else {
+//			System.out.println("true object is not same");
+//		}
+
+		// StringPlay s1 = new StringPlay();
+		// s1.StringPlayTest();
+//		System.out.println("Check Electric State: " + ElectricState.NE.isSame(4));
+
+		EnumPlay esp = new EnumPlay();
+		esp.EnumPlayTest();
+
+//		StaticCollection st =new StaticCollection();
+//		st.print();
+		
+//		CreateDeletePlay c = new CreateDeletePlay();
+//		c.TestCreateDeletePlay();
 		
 //		DatePlay datePlay = new DatePlay();
 //		int retryIndex = 0;
@@ -59,13 +86,16 @@ class Example {
 	
 //		ExtPackageFootballPlayer footballPlayer = new ExtPackageFootballPlayer(11);
 //		System.out.println("player - " + footballPlayer);
-		
 		// collection 
 //		ListPlay listPlay = new ListPlay();
 //		listPlay.TestListPlay();
+
+
 		
 //		AbstractionPlay ap1 = new AbstractionPlay();
 //		ap1.AbstractionPlay_Test();
+		
+		
 		
 		// interfaces
 //		InterfacesPlay ip1 = new InterfacesPlay();
@@ -79,8 +109,14 @@ class Example {
 //		LambdaPlay lambda = new LambdaPlay();
 //		lambda.TestLamdaPlay();
 		
-		PredicatePlay predicatePlay = new PredicatePlay();
-		predicatePlay.PredicatePlay_Enter();
+//		PredicatePlay predicatePlay = new PredicatePlay();
+//		predicatePlay.PredicatePlay_Enter();
+//		
+		
+//		ConcurrentHashMapPlay p = new ConcurrentHashMapPlay();
+//		p.ConcurrentHashMapPlayTest();
+		
+		
 	}
 	
 

@@ -1,4 +1,4 @@
-package com.rahulhegde.maven;
+package mockitodemo;
 
 import java.time.ZoneId;
 
@@ -17,6 +17,7 @@ public class App
 	}
 	
 	public int multiple (int multiplier1, int multiplier2) {
+		System.out.println("calling multiple method");
 		return multiplier1* multiplier2;
 	}
 	

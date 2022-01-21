@@ -1,15 +1,29 @@
-package com.hibernate.demo;
+package com.hibernate.demo.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityResult;
+import javax.persistence.FieldResult;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name="student")
+@NamedNativeQuery(name="Student.getListUsingInQuery",  query = "SELECT * FROM hb_student_tracker.student s WHERE id in (:studentList)", resultClass = Student.class)
+
+@SqlResultSetMapping(
+        name = "StudentEntityMapping",
+        entities = @EntityResult(
+                entityClass = Student.class,
+                fields = {
+                    @FieldResult(name = "id", column = "studentId"),
+                    @FieldResult(name = "firstName", column = "studentFirstName"),
+                    @FieldResult(name = "lastName", column = "studentLastName"),
+                    @FieldResult(name = "emailId", column = "studentEmailId")}))
 public class Student {
 
 	@Id

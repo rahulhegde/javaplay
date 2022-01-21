@@ -1,4 +1,4 @@
-package com.rahulhegde.maven;
+package mockitodemo;
 
 /**
  * Hello world!

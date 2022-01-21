@@ -16,7 +16,7 @@ public interface Vehicle {
 	// interface function to implement
 	void Ride();
 	
-	// extension or default method for interface that can be overriden
+	// extension or default method for interface that can be overridden
 	default public void Model() {
 		System.out.println("default method/extension method implementation of vehicle used");
 	}
