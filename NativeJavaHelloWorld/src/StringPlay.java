@@ -7,7 +7,7 @@ public class StringPlay {
 	}
 	
 	
-	private void Test_StringPlay_StringPoolConstant( ) {
+	private void Test_StringPlay_StringConstantPool( ) {
 		// string created on heap - separate memory address
 		String s1 = new String("hello"); // goes on heap
 
@@ -20,9 +20,10 @@ public class StringPlay {
 		}
 		
 		// string that are constant are stored on Heap but dedicated area called String Constant Pool
+		// every string literal is hashed and its reference is stored in the hashmap for easy lookup
 		String s2 = "hello"; // constant stored on string constant 
 		
-		// forces to create memory in SCP if not available but s4 and s2 address are same but not s1/s2 or s
+		// forces to create memory in SCP if not available but s4 and s2 address are same but not s1/s3
 		String s4 = s1.intern(); // constant stored on string constant 
 		
 		if (s2 == s4 ) {
@@ -47,6 +48,6 @@ public class StringPlay {
 	}
 	
 	public void StringPlayTest() {
-		Test_StringPlay_StringPoolConstant();
+		Test_StringPlay_StringConstantPool();
 	}
 }

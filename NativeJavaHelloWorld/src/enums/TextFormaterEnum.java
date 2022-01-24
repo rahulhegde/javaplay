@@ -4,5 +4,5 @@ package enums;
 public enum TextFormaterEnum {
 	ITALIC, 
 	BOLD,
-	UNDERLINE	
+	UNDERLINE
 }

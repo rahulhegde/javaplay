@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface Vehicle2 extends Vehicle {
+public interface VehicleInterface extends VehicleMasterInterface {
 	
 	// Reference: https://stackoverflow.com/questions/2430756/why-are-interface-variables-static-and-final-by-default#:~:text=In%20Java%20%2C%20interface%20doesn't,different%20from%20an%20instance%20variable.
 	// Interface variables are static because Java interfaces cannot be instantiated in their own right; 
@@ -14,9 +14,9 @@ public interface Vehicle2 extends Vehicle {
 	}
 	
 	// interface function to implement
-	void Ride2();
+	void Ride();
 	
-	// extension or default method for interface that can be overriden
+	// extension or default method for interface that can be overridden
 	default public void Model() {
 		System.out.println("default method/extension method implementation of vehicle used");
 	}

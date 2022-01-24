@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ListPlay {
+	
+	public ListPlay() {
+		System.out.println("*** Collection Play ***");
+	}
+	
 	public enum State {
 		ON(1), OFF(2);
 		
@@ -22,29 +27,41 @@ public class ListPlay {
 		}
 	}
 
-	void ListPlay_ArrayList( ) {
+	void TestListView( ) {
+		// create an list and then slice. The slice point to underlying data structure.
+		// so there is no duplicate list created.
 		List<Integer> arrayList = new ArrayList<Integer>();
-		
-		
 		int index = 15;
 		for (;index > 0;index--) {
 			arrayList.add(1);
 			arrayList.add(5);
 			arrayList.add(3);
 		}		
+		System.out.println("list - size: " + arrayList.size() + ", elements: " + arrayList);
 
-		System.out.println("element in array list (before - arraylist): " + arrayList);
-		
+		// non structural changes - like updates are safe during iteration
 		List<Integer> sliceList = arrayList.subList(0, 10);
 		sliceList.set(1, 2);
-
-		System.out.println("element in array list (after - subList): " + sliceList);
-		System.out.println("element in array list (after - arraylist): " + arrayList);
-
+		arrayList.subList(0, 10);
+		System.out.println("list size - slice of Ten, element update on index=1, slicelist size: " + sliceList.size() + ", elements: " + sliceList);
+	
+		//	structural changes - changing size may not be safe and can throw exception, 
+		// if there is iteration in-progress in a separate thread
+		sliceList.subList(3, 5).clear();
+		System.out.println("list size - after deleting 2 elements from slicelist, array size: " + arrayList.size() + 
+				", sliceList size: " + sliceList.size());
 	}
 
 	// Reference: https://stackoverflow.com/questions/40930861/what-is-the-use-of-collections-synchronizedlist-method-it-doesnt-seem-to-syn
 	void ListPlay_CollectionSynchronizedList( ) {
+		
+		// caution during iterator use on synchronized list or any synchronized collection
+		// Reference: https://stackoverflow.com/questions/18873547/need-to-manually-synchronize-the-synchronized-list-while-iteration-when-it-could
+		// hasNext if true then use Next, however there can be many changes to list thus marking iterator completely
+		// invalid. These iterator operations needs to be synchronized in total by programmer.
+		
+		// Check the iterator position: Reference: https://docs.oracle.com/javase/8/docs/api/java/util/ListIterator.html
+		// it is between the elements. So three element list will have 4 positions.
 		List<String> synList = Collections.synchronizedList(new ArrayList<String>());
 
 		Thread t1 = new Thread (new Runnable() {
@@ -92,7 +109,7 @@ public class ListPlay {
 			e.printStackTrace();
 		}
 
-		System.out.println("size: " + synList.size());
+		System.out.println("synchronized list, size: " + synList.size());
 	}
 
 	// accepts all classes extending from shape - shape, circle and rectangle
@@ -123,11 +140,6 @@ public class ListPlay {
 		cirleList.add(new Circle());
 
 		// upperbound - accepts cirle, rectangle and circle list
-		// use case - Bounded wildcards are just what one needs to handle the example of the DMV passing 
-		// its data to the census bureau. Our example assumes that the data is represented by mapping 
-		// from names (represented as strings) to people (represented by reference types such as Person or its subtypes, 
-		// such as Driver). Map<K,V> is an example of a generic type that takes two type arguments, 
-		// representing the keys and values of the map.
 		ListPlay_Wildcard_UpperBound(shapeList);
 		ListPlay_Wildcard_UpperBound(rectangleList);
 		ListPlay_Wildcard_UpperBound(cirleList);
@@ -169,8 +181,7 @@ public class ListPlay {
 		System.out.println("Double Condition works in Predicate - Remove entries >10 and <= 60: " + doubleConditionPredicateLists);
 
 		// combining multiple predicates and testing for the number
-		System.out.println("predicate test API is 11 > 10 AND <= 60: " + 
-				isGreaterThanTen.and(isLessThanEqual60).test(12));
+		System.out.println("predicate test API is 11 > 10 AND <= 60: " + isGreaterThanTen.and(isLessThanEqual60).test(12));
 
 		// removeIf - predicate on the object
 		List<Shape> shapeList = new ArrayList(Arrays.asList(new Rectangle(), new Circle()));
@@ -181,17 +192,24 @@ public class ListPlay {
 
 
 	public void TestListPlay() {
-		System.out.println("** Entering Collection List Test ***");
+		// Best Practice
+		// list sort internally uses mergesort, works well on partial sorted list 
+		// listiterator - provides bi-directional, a special list iterator for bi-directional traversal
+		// avoid performing traversal using list[index], use iterator.
+		// list is not re-entrant and hence use concurrent collections/list
+		// 
+				
 		System.out.println("State: " + State.ON);
 
+		// use of sublist or view from the List
+		TestListView();
+		
+		ListPlay_CollectionSynchronizedList();
 
+		// shows extends/super/exact match 
+		ListPlay_Wildcard();
 
-		//ListPlay_ArrayList();
-		//ListPlay_CollectionSynchronizedList();
-
-		//ListPlay_Wildcard();
-
-		//ListPlay_RemoveIf_Predicate();
+		ListPlay_RemoveIf_Predicate();
 	}
 
 

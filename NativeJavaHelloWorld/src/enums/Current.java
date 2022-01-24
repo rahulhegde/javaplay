@@ -71,7 +71,7 @@ public enum Current {
 	// to make in instance specific, pass the Enum to the API
 	static void printCurrentStateEnums() {
 		for(Current current : Current.values()) {
-			System.out.println("specialHandlingCrossConstantByStatic - " + current);
+			System.out.println("specialHandlingAcrossConstantUsingStaticMethod - " + current);
 		}
 	}
 }

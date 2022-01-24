@@ -45,7 +45,7 @@ public class EnumPlay {
 		
 		
 		// Same EnumSet object can be altered - it is not immutable
-		// difference between final v/s immutable set/object like string
+		// difference between final v/s immutable /unmodifiable set/object like string
 		// https://stackoverflow.com/questions/2420096/what-does-collections-unmodifiableset-do-in-java/2420153
 		formats.remove(TextFormaterEnum.BOLD);
 		System.out.println("contains BOLD test after remove - " +  formats.contains(TextFormaterEnum.BOLD));
@@ -59,24 +59,36 @@ public class EnumPlay {
 	// enum map represent backed datastructure as an array with key element index
 	// based on the ordinal of the element
 	// there is no JumboEnumMap as there is in EnumSet
-	private void TestEnum_EnumMapExample(PrimitiveHolder<Boolean> holder) {
+	private void TestEnum_EnumMapExample() {
 		Map<Current, String> enumMap = new EnumMap<>(Current.class);
 		enumMap.put(Current.OFF, "OFF");
 		enumMap.put(Current.ON, "ON");
 		enumMap.put(Current.INVALID, "INVALID");
-		System.out.println("print enum map using for_each" + enumMap);
-		enumMap.forEach((key, value) -> { System.out.println("printing from enum map - key: " + key + ", value: " + value);  });
+		System.out.println("print enum map using for_each: " + enumMap);
+		enumMap.forEach((key, value) -> {
+			System.out.println("printing from enum map - key: " + key + ", value: " + value);
+		});
 		
-		holder.setValue(true);
+	}
+	
+	public void TestPrimitiveHolder(PrimitiveHolder<Boolean> holder) {
+		holder.setValue(true);	
 	}
 	
 	public void EnumPlayTest( ) {
-		//TestEnum_OrderOfEnumConstantCreation();
-		//TestEnum_EnumSetExample();
+		// 
+		TestEnum_OrderOfEnumConstantCreation();
 		
-		PrimitiveHolder<Boolean> holder = new PrimitiveHolder<>(true);
-		System.out.println("primite holder -1 " + holder.getValue());
-		TestEnum_EnumMapExample(holder);
-		System.out.println("primite holder - 2" + holder.getValue());
+		// enum set example, a replacement of bitwise operation
+		TestEnum_EnumSetExample();
+				
+		// enum map example
+		TestEnum_EnumMapExample();
+
+		// boxed primitive
+		PrimitiveHolder<Boolean> holder = new PrimitiveHolder<>(false);
+		System.out.println("primite holder -1: " + holder.getValue());
+		TestPrimitiveHolder(holder);
+		System.out.println("primite holder - 2: " + holder.getValue());
 	}
 }

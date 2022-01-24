@@ -1,6 +1,6 @@
 
 // Refer compilation error report upon use of @FunctionalInterface 
-// defining the class as not a interface
+// defining the class as not as interface
 @FunctionalInterface
 public class FunctionalInterfaceBar {
 	public void method();
