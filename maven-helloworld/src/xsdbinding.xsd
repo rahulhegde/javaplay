@@ -1,0 +1,38 @@
+<jxb:bindings xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" version="2.1">
+<!-- 	<jxb:bindings
+		schemaLocation="main/xsd/fxtr.030.001.04.xsd">
+		<jxb:bindings node="//xs:simpleType[@name='AddressType2Code']">
+			<jxb:typesafeEnumClass name="FXTR30AddressType2Code" />
+		</jxb:bindings>
+	</jxb:bindings>
+	<jxb:bindings
+		schemaLocation="main/xsd/camt.030.001.05.xsd">
+		<jxb:bindings node="//xs:simpleType[@name='AddressType2Code']">
+			<jxb:typesafeEnumClass name="CA30AddressType2Code" />
+		</jxb:bindings>
+	</jxb:bindings> -->
+
+
+	<jxb:bindings
+		schemaLocation="main/xsd/camt.030.001.05.xsd" >
+		<jxb:schemaBindings>
+			<jxb:package name="_2022.camt_030_001" />
+		</jxb:schemaBindings>
+	</jxb:bindings>
+
+	<jxb:bindings
+		schemaLocation="main/xsd/fxtr.030.001.04.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="_2022.fxtr_030_001" />
+		</jxb:schemaBindings>
+	</jxb:bindings>
+	
+	<jxb:bindings
+		schemaLocation="main/xsd/camt.088.001.01.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="_2022.camt_088_001" />
+		</jxb:schemaBindings>
+	</jxb:bindings>
+	
+</jxb:bindings>

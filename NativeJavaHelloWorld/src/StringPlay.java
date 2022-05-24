@@ -1,3 +1,7 @@
+import java.math.BigDecimal;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
 
 public class StringPlay {
 
@@ -19,6 +23,23 @@ public class StringPlay {
 			System.out.println("1 - heap string references are always not equal");
 		}
 		
+		
+		// comparator is not same as equals
+		BigDecimal b1 = new BigDecimal("4.0");
+		BigDecimal b2 = new BigDecimal("4.00");
+		if (b1 != b2) {
+			System.out.println("1 - BigDecimal reference are not same");
+			System.out.println("1.1 - BigDecimal equals: " + b1.equals(b2));
+			System.out.println("1.1 - BigDecimal comparator: " + b1.compareTo(b2));
+		}
+		
+        Deque<Integer> deque = new ArrayDeque<>();
+		Iterator<Integer> itr = deque.iterator();
+		while(itr.hasNext()) {
+			System.out.println("value: " + itr.next());
+		}
+		
+			
 		// string that are constant are stored on Heap but dedicated area called String Constant Pool
 		// every string literal is hashed and its reference is stored in the hashmap for easy lookup
 		String s2 = "hello"; // constant stored on string constant 

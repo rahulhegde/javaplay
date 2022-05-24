@@ -3,6 +3,7 @@ package com.hibernate.demo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.hibernate.Session;
@@ -27,7 +28,11 @@ public class Demo01HibernateSessionAPIUsage {
 		
 		// pure JPA API usage
 		int studentId = test.insertUsingJPAPersistUsage();
+		
+		System.exit(1);
 		test.selectUsingJPAFindUsage(studentId);
+	
+		
 		test.updateUsingHibernateGetUsage(studentId);
 		test.selectUsingHibernateGetUsage(studentId);
 		test.mergeUsage(studentId);
@@ -59,25 +64,61 @@ public class Demo01HibernateSessionAPIUsage {
 		factory.close();
 	}
 	
-	private int insertUsingJPAPersistUsage() {
-		Session session = factory.getCurrentSession();
-		Student student = new Student();
+//	private int insertUsingJPAPersistUsage() {
+//		Session session = factory.getCurrentSession();
+//		Student student = new Student();
+//		try {
+//			session.beginTransaction();
+//			EntityManager em = session.getEntityManagerFactory().createEntityManager();
+//			session.close();
+//			
+//			em.getTransaction().begin();
+//			student.setFirstName("demo01_rahul");
+//			student.setLastName("demo01_hegde");
+//			student.setEmailId("demo01_hegde_rahul@gmail.com");
+//			em.persist(student);
+//			System.out.println("insertUsingJPAPersistUsage student - before: " + student.toString());
+//			//session.getTransaction().commit();
+//			em.getTransaction().commit();
+//			
+//			System.out.println("insertUsingJPAPersistUsage student: after: " + student.toString());
+//		} catch (Exception exp) {
+//			System.out.println("\n exception handling");		
+//			exp.printStackTrace();
+//		}
+//		return student.getId();
+//	}
+	
+	public int insertUsingJPAPersistUsage() {
+		Session session = factory.openSession();
 		try {
 			session.beginTransaction();
-			student.setFirstName("demo01_rahul");
-			student.setLastName("demo01_hegde");
-			student.setEmailId("demo01_hegde_rahul@gmail.com");
-			session.persist(student);
-			System.out.println("insertUsingJPAPersistUsage student - before: " + student.toString());
-			session.getTransaction().commit();
-			System.out.println("insertUsingJPAPersistUsage student: after: " + student.toString());
+			session.setJdbcBatchSize(10);
+			for (int i = 0; i < 10; i++) {
+				Student student = new Student();
+				//student.setId(i);
+				student.setFirstName("demo01_rahul");
+				student.setLastName("demo01_hegde");
+				student.setEmailId("demo01_hegde_rahul@gmail.com");
+				session.persist(student);
+				System.out.println("insertUsingJPAPersistUsage student - before: " + student.toString());
+				System.out.println("insertUsingJPAPersistUsage student: after: " + student.toString());
+				
+//				if (i % 5 == 0) {
+//					session.flush();
+//					session.clear();
+//				}
+			}
+
+			//session.getTransaction().commit();
+			session.getTransaction().commit();;
+			
 		} catch (Exception exp) {
 			System.out.println("\n exception handling");		
 			exp.printStackTrace();
 		}
-		return student.getId();
+		return 1;
 	}
-	
 	
 	private int insertUsingHibernateSaveUsage() {
 		Session session = factory.getCurrentSession();
@@ -102,7 +143,9 @@ public class Demo01HibernateSessionAPIUsage {
 		Session session = factory.getCurrentSession();
 		try {
 			session.beginTransaction();
-			Student student = session.find(Student.class, studentId);
+			EntityManager em = session.getEntityManagerFactory().createEntityManager();
+			session.close();
+			Student student = em.find(Student.class, studentId);
 			System.out.println("selectUsingJPAFindUsage student: " + student.toString());
 			session.getTransaction().commit();
 		} catch (Exception exp) {

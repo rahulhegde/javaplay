@@ -1,8 +1,18 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import DatePlay.DatePlay;
-import collections.ConcurrentHashMapPlay;
 
 class Example {
 	HashMap<String, DatePlay> mapper = new HashMap<String, DatePlay>();
@@ -28,6 +38,59 @@ class Example {
 			}
 		};
 	}
+	
+	private Map<String, Boolean> clientIdExistHolder = new HashMap<>();
+	
+	public void parse(List<String> files) {
+		
+		for (String file : files) {
+			FileInputStream filehandle;
+			String[] splits;
+			try {
+				filehandle = new FileInputStream(file);
+				splits = filehandle.readAllBytes().toString().split(",");
+				if (splits.length > 0) {
+					clientIdExistHolder.put(splits[1], true);
+				}
+				
+			} 
+			catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void example(List<Integer> arr) {
+		Collections.sort(arr);
+		System.out.println(arr);
+		List<Integer> returnArr = new ArrayList<>();
+		if (arr.size() > 2) {
+			int size = arr.size();
+			returnArr.add(arr.get(size -1));			
+			returnArr.add(arr.get(size -2));
+			int b_sum = 0;
+			returnArr.forEach(i -> System.out.println(sum + i));
+			System.out.println("sum: " + sum);
+			
+			int a_counter = 0;;
+			int b_counter = size - 2;
+			int a_sum =0;
+			for (; a_counter < b_counter; a_counter++) {
+				if (a_sum + arr.get(a_counter) > b_sum) {
+					returnArr.add(arr.get(a_counter));
+					b_counter--;
+				}
+			}			
+		}else {
+			returnArr.addAll(arr);
+		}
+		return returnArr;	
+	}
 
 	public static void main(String args[]) {
 
@@ -49,8 +112,8 @@ class Example {
 //			System.out.println("true object is not same");
 //		}
 
-//		StringPlay s1 = new StringPlay();
-//		s1.StringPlayTest();
+		StringPlay s1 = new StringPlay();
+		s1.StringPlayTest();
 
 		//System.out.println("Check Electric State: " + ElectricState.NE.isSame(4));
 
@@ -86,8 +149,8 @@ class Example {
 //		PredicatePlay predicatePlay = new PredicatePlay();
 //		predicatePlay.PredicatePlay_Enter();
 
-		ConcurrentHashMapPlay p = new ConcurrentHashMapPlay();
-		p.ConcurrentHashMapPlayTest();
+//		ConcurrentHashMapPlay p = new ConcurrentHashMapPlay();
+//		p.ConcurrentHashMapPlayTest();
 
 	}
 
@@ -116,5 +179,20 @@ class Example {
 
 	public void ChangeIntegerValue1(String message) {
 		message += " world";
+	}
+	
+	public void TestWithFileOpen() {
+
+		try (BufferedReader buffer = new BufferedReader(new FileReader("hello"))) {
+			String buf = buffer.readLine();
+			if (buf != null) {
+				System.out.println(buf);
+			}
+			Files.lines(Paths.get("filename")).forEach(System.out::println);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 }

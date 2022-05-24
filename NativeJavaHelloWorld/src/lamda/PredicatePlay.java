@@ -135,5 +135,8 @@ public class PredicatePlay {
 		Function_Test();
 		Suppier_Test();
 		Comparator_Test();
+		
+		Predicate<Integer> greaterThan20 = a -> a > 20;
+		System.out.println("***** " + greaterThan20.test(200));
 	}
 }
