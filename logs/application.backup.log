@@ -14,3 +14,19 @@
 2022-03-23T21:12:27.903-0400 INFO Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-03-23T21:12:27.909-0400 INFO HikariPool-1 - Shutdown initiated...
 2022-03-23T21:12:27.921-0400 INFO HikariPool-1 - Shutdown completed.
+2022-05-25T07:33:46.380-0400 INFO Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-05-25T07:33:46.401-0400 INFO Finished Spring Data repository scanning in 8 ms. Found 0 JPA repository interfaces.
+2022-05-25T07:33:47.700-0400 INFO HikariPool-1 - Starting...
+2022-05-25T07:33:47.977-0400 INFO HikariPool-1 - Start completed.
+2022-05-25T07:33:48.494-0400 INFO Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-05-25T07:33:48.658-0400 INFO Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-05-25T07:33:48.665-0400 INFO HikariPool-1 - Shutdown initiated...
+2022-05-25T07:33:48.683-0400 INFO HikariPool-1 - Shutdown completed.
+2022-05-28T15:54:45.899-0400 INFO Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-05-28T15:54:45.924-0400 INFO Finished Spring Data repository scanning in 9 ms. Found 0 JPA repository interfaces.
+2022-05-28T15:54:46.959-0400 INFO HikariPool-1 - Starting...
+2022-05-28T15:54:47.254-0400 INFO HikariPool-1 - Start completed.
+2022-05-28T15:54:47.834-0400 INFO Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-05-28T15:54:48.014-0400 INFO Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-05-28T15:54:48.019-0400 INFO HikariPool-1 - Shutdown initiated...
+2022-05-28T15:54:48.030-0400 INFO HikariPool-1 - Shutdown completed.

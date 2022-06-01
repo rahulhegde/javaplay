@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class MessageSender {
@@ -27,6 +28,7 @@ public class MessageSender {
 		System.out.println("jms template");
 	}
 
+	@Transactional
 	public void sendMessage(String queueName, String message) {
 		
 		System.out.println("sending: " + message);

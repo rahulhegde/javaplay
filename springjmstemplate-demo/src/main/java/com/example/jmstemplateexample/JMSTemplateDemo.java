@@ -23,16 +23,24 @@ public class JMSTemplateDemo {
 				.getBean(JMSTemplateDemo.class);
 		System.out.println("JMSTemplateDemo config" + jmsapp.config);
 
+		//jmsapp.SendMoreMessages();
+
 		try {
 			jmsapp.msgSender.sendMessage(jmsapp.config.getMqQueueName(), "hello1");
 			Thread.sleep(5000);
-			jmsapp.msgSender.sendMessage(jmsapp.config.getMqQueueName(), "hello2");
-			Thread.sleep(8000);
-			//System.exit(1);
-			jmsapp.msgSender.sendMessage(jmsapp.config.getMqQueueName(), "hello3");
+//			jmsapp.msgSender.sendMessage(jmsapp.config.getMqQueueName(), "hello2");
+//			Thread.sleep(8000);
+//			//System.exit(1);
+//			jmsapp.msgSender.sendMessage(jmsapp.config.getMqQueueName(), "hello3");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+//	@Transactional
+//	public void SendMoreMessages() {
+//		msgSender.sendMessage(config.getMqQueueName(), "hello1");
+//		msgSender.sendMessage(config.getMqQueueName(), "hello2");
+//	}
 }

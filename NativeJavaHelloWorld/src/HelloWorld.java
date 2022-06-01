@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import DatePlay.DatePlay;
+import abstaction.GoogleExample;
 
 class Example {
 	HashMap<String, DatePlay> mapper = new HashMap<String, DatePlay>();
@@ -65,7 +66,7 @@ class Example {
 		}
 	}
 	
-	public void example(List<Integer> arr) {
+	public List<Integer>  example(List<Integer> arr) {
 		Collections.sort(arr);
 		System.out.println(arr);
 		List<Integer> returnArr = new ArrayList<>();
@@ -74,8 +75,8 @@ class Example {
 			returnArr.add(arr.get(size -1));			
 			returnArr.add(arr.get(size -2));
 			int b_sum = 0;
-			returnArr.forEach(i -> System.out.println(sum + i));
-			System.out.println("sum: " + sum);
+//			returnArr.forEach(i -> System.out.println(sum + i));
+//			System.out.println("sum: " + sum);
 			
 			int a_counter = 0;;
 			int b_counter = size - 2;
@@ -151,7 +152,13 @@ class Example {
 
 //		ConcurrentHashMapPlay p = new ConcurrentHashMapPlay();
 //		p.ConcurrentHashMapPlayTest();
+		
+//		QueuePlay qp = new QueuePlay();
+//		qp.TestQueuePlay();
 
+		GoogleExample geg = new GoogleExample();
+		geg.GoogleExmaplePlay();
+		
 	}
 
 	public void printMapper() {

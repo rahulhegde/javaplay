@@ -27,7 +27,9 @@ public class JMSConfiguration {
 
 		try {
 			connectionFactory.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
-
+			//connectionFactory.setShareConvAllowed(10);
+			
+			
 			connectionFactory.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, appConfig.getQueueManager());
 			connectionFactory.setStringProperty(WMQConstants.WMQ_HOST_NAME, appConfig.getHostname());
 			connectionFactory.setIntProperty(WMQConstants.WMQ_PORT, appConfig.getPort());

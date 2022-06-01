@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>jmstemplateexample</artifactId>
+	<artifactId>springjmstemplate-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>jmstemplateexample</name>
-	<description>jmstemplate example demo </description>
+	<name>springjmstemplate-demo</name>
+	<description>spring jmstemplate example demo </description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
