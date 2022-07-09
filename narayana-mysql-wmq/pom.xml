@@ -99,11 +99,11 @@
 			<artifactId>commons-pool2</artifactId>
 		</dependency>
 
+		<!-- Provides JMS cache connection factory -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jms</artifactId>
 		</dependency>
-
 
 	</dependencies>
 </project>

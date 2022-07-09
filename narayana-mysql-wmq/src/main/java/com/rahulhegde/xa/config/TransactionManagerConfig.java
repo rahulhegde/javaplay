@@ -12,6 +12,8 @@ import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.dbcp2.managed.DataSourceXAConnectionFactory;
 import org.apache.commons.dbcp2.managed.ManagedDataSource;
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.jboss.narayana.jta.jms.ConnectionFactoryProxy;
+import org.jboss.narayana.jta.jms.TransactionHelperImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.connection.CachingConnectionFactory;
@@ -24,7 +26,11 @@ import com.ibm.msg.client.wmq.WMQConstants;
 import com.mysql.cj.jdbc.MysqlXADataSource;
 
 @Configuration
-public class DatabaseConfig {
+public class TransactionManagerConfig {
+	final TransactionManager tm = transactionManager();
+	final UserTransaction ut = userTransaction();
+	final XADataSource xads = mysqlXADataSource();
+	
 	// Create variables for the connection to MQ
 	private static final String HOST = "localhost"; // Host name or IP address
 	private static final int PORT = 1414; // Listener port for your queue manager
@@ -34,7 +40,7 @@ public class DatabaseConfig {
 	private static final String APP_PASSWORD = "passw0rd"; // Password that the application uses to connect to MQ
 	private static final String QUEUE_NAME = "DEV.QUEUE.1"; // Queue that the application uses to put and get messages to and from
 
-	public XADataSource mysqlXADataSource() {
+	private XADataSource mysqlXADataSource() {
 		MysqlXADataSource source = new MysqlXADataSource();
 		source.setUrl("jdbc:mysql://localhost:3306/hb_student_tracker?useSSL=false");
 		source.setUser("hbstudent");
@@ -44,18 +50,16 @@ public class DatabaseConfig {
 
 	@Bean (name="dataSource")
 	public DataSource dataSource() {
-        DataSourceXAConnectionFactory dataSourceXAConnectionFactory =
-                new DataSourceXAConnectionFactory(transactionManager(), mysqlXADataSource());
-        PoolableConnectionFactory poolableConnectionFactory =
-                new PoolableConnectionFactory(dataSourceXAConnectionFactory, null);
-        GenericObjectPool<PoolableConnection> connectionPool =
-                new GenericObjectPool<>(poolableConnectionFactory);
+        DataSourceXAConnectionFactory dataSourceXAConnectionFactory = new DataSourceXAConnectionFactory(tm, xads);
+        PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(dataSourceXAConnectionFactory, null);
+        GenericObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<>(poolableConnectionFactory);
+        //connectionPool.setMaxTotal(1);
+        //connectionPool.setMaxWait(Duration.ofSeconds(1));
         poolableConnectionFactory.setPool(connectionPool);
-        return new ManagedDataSource<>(connectionPool,
-                dataSourceXAConnectionFactory.getTransactionRegistry());
+        return new ManagedDataSource<>(connectionPool, dataSourceXAConnectionFactory.getTransactionRegistry());
 	}
 
-	@Bean
+	@Bean (name="connectionFactory")
 	public ConnectionFactory connectionFactory() throws JMSException {
 		MQXAQueueConnectionFactory cf = new MQXAQueueConnectionFactory();
 
@@ -69,29 +73,48 @@ public class DatabaseConfig {
 		cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
 		cf.setStringProperty(WMQConstants.USERID, APP_USER);
 		cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
-
-		CachingConnectionFactory ccf = new CachingConnectionFactory(cf);
+		
+		ConnectionFactoryProxy cfp = new ConnectionFactoryProxy(cf, new TransactionHelperImpl(tm));
+		CachingConnectionFactory ccf = new CachingConnectionFactory(cfp);
+		ccf.setReconnectOnException(true);
+		ccf.setSessionCacheSize(3);
 		
 		return ccf;
 	}
 
 
-	public UserTransaction userTransaction() {
+	private UserTransaction userTransaction() {
 		return new UserTransactionImple();
 	}
-
-    public TransactionManager transactionManager() {
+	
+    private TransactionManager transactionManager() {
 		return new TransactionManagerImple();
     }
+    
+    public TransactionManager getTM() {
+    	return tm;
+    }
 
-	@Bean(name = "transactionManager")
+    public UserTransaction getUt() {
+    	return ut;
+    }
+//    public XADataSource getXADS() {
+//		return xads;
+//    }
+//    
+//    public DataSource getDS() {
+//		return ds;
+//    }
+    
+    /* provides spirng @Transactional support */
+    @Bean (name = "transactionManager")
 	public JtaTransactionManager jtaTransactionManager() {
-		JtaTransactionManager tm = new JtaTransactionManager();
-		tm.setTransactionManager(transactionManager());
-		tm.setUserTransaction(userTransaction());
-		return tm;
+		JtaTransactionManager jtatm = new JtaTransactionManager();
+		jtatm.setTransactionManager(tm);
+		jtatm.setUserTransaction(userTransaction());
+		return jtatm;
 	}
-	
+
 //	public JpaVendorAdapter jpaVendorAdapter() {
 //		HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
 //		hibernateJpaVendorAdapter.setShowSql(true);
