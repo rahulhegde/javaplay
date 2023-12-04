@@ -1,0 +1,41 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: collector:5555
+      http:
+
+# processors:
+#   batch:
+
+exporters:
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true  
+  prometheus:
+    endpoint: collector:6666
+    namespace: default         
+  logging:
+    loglevel: debug
+
+# extensions:
+#   health_check:
+#   pprof:
+#   zpages:
+
+service:
+  # extensions: [health_check, pprof, zpages]
+  pipelines:
+    # traces:
+    #   receivers: [otlp]
+    #   # processors: [batch]
+    #   exporters: [otlp]
+    metrics:
+      receivers: [otlp]
+      # processors: [batch]
+      exporters: [prometheus]
+    # logs:
+    #   receivers: [otlp]
+    #   processors: [batch]
+    #   exporters: [otlp]
