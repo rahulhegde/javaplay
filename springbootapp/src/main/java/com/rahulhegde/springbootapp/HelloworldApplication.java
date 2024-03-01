@@ -23,6 +23,7 @@ public class HelloworldApplication {
 		logger.debug("hello world is running with {} or {}", logger.getClass(), logger.toString());
 
 		SpringApplication.run(HelloworldApplication.class, args);
+
 	}
 
 }

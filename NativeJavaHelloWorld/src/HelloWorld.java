@@ -5,12 +5,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import com.google.gson.Gson;
 
 import DatePlay.DatePlay;
 import abstaction.GoogleExample;
@@ -112,10 +116,25 @@ class Example {
 //		} else {
 //			System.out.println("true object is not same");
 //		}
+		
+		System.out.println("days between "
+				+ ChronoUnit.DAYS.between(LocalDate.parse("2023-01-01"), LocalDate.parse("2023-01-02")));		
 
 		StringPlay s1 = new StringPlay();
 		s1.StringPlayTest();
 
+		Gson g1 = new Gson();
+		Project p = new Project();
+		
+		p.setName("Rahul");
+		p.setStatus(ProjectStatus.Running);
+		
+		String json = g1.toJson(p,  Project.class);
+		System.out.println("Project json: " + json);
+		
+		Project p2 = g1.fromJson(json, Project.class);
+		System.out.println("Project pojo: " + p2);
+		
 		//System.out.println("Check Electric State: " + ElectricState.NE.isSame(4));
 
 //		EnumPlay esp = new EnumPlay();

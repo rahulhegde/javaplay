@@ -219,7 +219,6 @@ public class NaryanaDemoApp {
 				.setObjectStoreDir("/home/developer/workspace/java-ws/arjuna-xa/narayana-mysql-wmq/userdefobjstore/");
 		arjPropertyManager.getCoordinatorEnvironmentBean().setDefaultTimeout(15);
 		arjPropertyManager.getCoordinatorEnvironmentBean().setEnableStatistics(true);
-
 		
 		//app.MultithreadOps_TestJDBC();
 		app.MultithreadOps_TestJDBCnJMS();

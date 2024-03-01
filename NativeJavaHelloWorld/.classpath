@@ -4,5 +4,7 @@
 	<classpathentry kind="lib" path="/home/developer/workspace/java-ws/packages/junit4/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="lib" path="/home/developer/workspace/java-ws/packages/junit4/junit-4.13.2.jar"/>
 	<classpathentry kind="lib" path="/usr/lib/jvm/java-11-openjdk-amd64/lib/jrt-fs.jar" sourcepath="/usr/lib/jvm/java-11-openjdk-amd64/lib/src.zip"/>
+	<classpathentry kind="lib" path="/home/developer/Downloads/gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="/home/developer/Downloads/opentelemetry-javaagent.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

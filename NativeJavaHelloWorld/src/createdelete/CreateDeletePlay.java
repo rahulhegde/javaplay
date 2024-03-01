@@ -31,16 +31,18 @@ public class CreateDeletePlay {
 					"weak reference availability status pre-GC value: " + costWR.get() + ", status: " + status);
 		}
 	}
-	
-	void TestCacheUsingValueOf( ) {
+
+	void TestCacheUsingValueOf() {
 		String str1 = new String("new");
 		String str2 = new String("new");
-		
+
 		if (str1 != str2) {
-			System.out.println("string reference is different for one created using new operator, else use intern/literal");
+			System.out.println(
+					"string reference is different for one created using new operator, else use intern/literal");
 		}
 
-		// provides caching functionality thus giving same object reference for same value
+		// provides caching functionality thus giving same object reference for same
+		// value
 		Integer I1 = Integer.valueOf(1);
 		Integer I2 = Integer.valueOf(1);
 		if (I1 == I2) {
@@ -52,13 +54,14 @@ public class CreateDeletePlay {
 		if (b1 == b2) {
 			System.out.println("big decimal reference of two different object is same due to caching: " + b1 + b2);
 		}
-		
+
 		BigDecimal b3 = BigDecimal.valueOf(100);
 		BigDecimal b4 = BigDecimal.valueOf(100);
 		if (b3 != b4) {
-			System.out.println("big decimal reference of two different object is not same as caching is limited: " + b3.equals(b4));
+			System.out.println("big decimal reference of two different object is not same as caching is limited: "
+					+ b3.equals(b4));
 		}
-		
+
 	}
 
 	public void TestCreateDeletePlay() {
@@ -75,12 +78,14 @@ public class CreateDeletePlay {
 		TestCleanerExample();
 
 		// References are hints to the GC if the heap allocated memory does not have any
-		// references in the application (JVM) then GC would 
+		// references in the application (JVM) then GC would
 		// - if marked WeakReference will be eagerly GCed
-		// - if marked SoftReference will be GCed only if there is a low memory condition like OOM
+		// - if marked SoftReference will be GCed only if there is a low memory
+		// condition like OOM
 		TestWeakReference();
-		
-		// shows usage of caching upon use of valueof static API. Caching is applicable limited set 
+
+		// shows usage of caching upon use of valueof static API. Caching is applicable
+		// limited set
 		TestCacheUsingValueOf();
 	}
 }
