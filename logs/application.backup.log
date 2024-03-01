@@ -1,8 +1,0 @@
-2023-12-30T18:35:59.562-0500 INFO Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2023-12-30T18:35:59.586-0500 INFO Finished Spring Data repository scanning in 8 ms. Found 0 JPA repository interfaces.
-2023-12-30T18:36:00.867-0500 INFO HikariPool-1 - Starting...
-2023-12-30T18:36:01.143-0500 INFO HikariPool-1 - Start completed.
-2023-12-30T18:36:01.721-0500 INFO Initialized JPA EntityManagerFactory for persistence unit 'default'
-2023-12-30T18:36:01.901-0500 INFO Closing JPA EntityManagerFactory for persistence unit 'default'
-2023-12-30T18:36:01.908-0500 INFO HikariPool-1 - Shutdown initiated...
-2023-12-30T18:36:01.923-0500 INFO HikariPool-1 - Shutdown completed.
