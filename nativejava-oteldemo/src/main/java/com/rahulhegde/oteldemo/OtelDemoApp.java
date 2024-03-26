@@ -18,13 +18,13 @@ public class OtelDemoApp {
     	logger.info("otel demo start");
 
     	// example to generate custom metrics
-    	//customMetricUsage();
+    	// customMetricUsage();
     	
     	// example to add custom signals
-    	//customTraceUsage();
+    	customTraceUsage();
     	
     	// thread spinner to show usage of JVM metrics
-    	//jvmMetricsThreadSpinner();
+    	// jvmMetricsThreadSpinner();
 
     	// db usage metrics
     	//OtelDemoApp.dbusage();
@@ -61,7 +61,8 @@ public class OtelDemoApp {
     
     private static void customTraceUsage() throws InterruptedException {
     	CustomTraceHelper trcHelper = new CustomTraceHelper();
-    	trcHelper.doMultipleApiCall();
+		logger.info("otel demo app for traces");
+    	trcHelper.processInput("I1");
     }
 
     private static void jvmMetricsThreadSpinner() throws InterruptedException {
